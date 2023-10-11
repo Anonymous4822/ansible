@@ -1,0 +1,15 @@
+---
+- name: Update web servers
+  hosts: centos
+  become: yes
+
+  tasks:
+
+  - name: update repository index
+    yum: 
+      update_cache: yes 
+
+  - name: Ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest 
