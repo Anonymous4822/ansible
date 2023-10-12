@@ -1,3 +1,4 @@
 #[centos]
 centos ansible_host=192.168.232.134 ansible_port=57972 ansible_user=hushpuppi
 
+

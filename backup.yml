@@ -1,0 +1,168 @@
+---
+- name: backup procedure
+  hosts: centos
+  become: yes
+
+  vars: 
+   path_backup: "/home/hushpuppi/backup-files"
+   path_httpd: "/httpd"
+   path_sql: "/sql"
+   path_server: "/server"
+   path_cfg: "/cfg"
+   path_data: "/data"
+   path_prod: "/prod"
+   path_dev: "/dev"
+   path_selinux: "/selinux"
+   path_ssh: "/ssh"
+   path_firewalld: "/firewalld"
+   path_fail2ban: "/fail2ban"
+   path_rkhunter: "/rkhunter"
+   path_openssl: "/openssl"
+  
+
+  tasks:
+
+  - name: create backup directory
+    file: 
+     path: "{{ path_backup }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory httpd
+    file: 
+     path: "{{ path_backup }}{{ path_httpd }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory httpd cfg
+    file: 
+     path: "{{ path_backup }}{{ path_httpd }}{{ path_cfg }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory httpd data
+    file: 
+     path: "{{ path_backup }}{{ path_httpd }}{{ path_data }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory httpd data prod
+    file: 
+     path: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ path_prod }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory httpd data dev
+    file: 
+     path: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ path_dev }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory sql
+    file: 
+     path: "{{ path_backup }}{{ path_sql }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory sql cfg
+    file: 
+     path: "{{ path_backup }}{{ path_sql }}{{ path_cfg }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory sql data
+    file: 
+     path: "{{ path_backup }}{{ path_sql }}{{ path_data }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server
+    file: 
+     path: "{{ path_backup }}{{ path_server }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server selinux
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_selinux }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server ssh
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_ssh }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server firewalld
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_firewalld }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server fail2ban
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_fail2ban }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server rkhunter
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_rkhunter }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
+  - name: create backup directory server openssl
+    file: 
+     path: "{{ path_backup }}{{ path_server }}{{ path_openssl }}"
+     state: directory
+     mode: '0755'
+     owner: hushpuppi
+     group: hushpuppi
+     recurse: yes
+
