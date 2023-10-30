@@ -18,7 +18,7 @@
    path_fail2ban: "/fail2ban"
    path_rkhunter: "/rkhunter"
    path_openssl: "/openssl"
-  
+   date: "{{ ansible_date_time.date.replace('-','') }}"
 
   tasks:
 
@@ -165,4 +165,15 @@
      owner: hushpuppi
      group: hushpuppi
      recurse: yes
+
+  - name: create backup web directory
+    archive:
+     force_archive: true
+     path: /var/www/html/domain1
+     dest: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ path_prod }}/centos-{{ date }}.tar.bz2"
+     format: bz2
+     owner: hushpuppi
+     group: hushpuppi
+     mode: '0644'
+
 

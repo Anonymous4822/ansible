@@ -1,0 +1,78 @@
+
+---
+- name: backup procedure
+  hosts: centos
+  become: yes
+
+  vars: 
+   path_backup: "/home/hushpuppi/backup-files"
+   path_httpd: "/httpd"
+   path_sql: "/sql"
+   path_server: "/server"
+   path_cfg: "/cfg"
+   path_data: "/data"
+   path_prod: "/prod"
+   path_dev: "/dev"
+   path_selinux: "/selinux"
+   path_ssh: "/ssh"
+   path_firewalld: "/firewalld"
+   path_fail2ban: "/fail2ban"
+   path_rkhunter: "/rkhunter"
+   path_openssl: "/openssl"
+   date: "{{ ansible_date_time.date.replace('-','') }}"
+
+  tasks:
+
+    - name: create backup directories
+      file: 
+       path: "{{ path_backup }}/{{ item }}"
+       state: directory
+       mode: '0755'
+       owner: hushpuppi
+       group: hushpuppi
+       recurse: yes
+      with_items: 
+      - "{{ path_httpd }}"
+      - "{{ path_sql }}"
+      - "{{ path_server }}"
+
+
+    - name: create backup directories httpd
+      file: 
+       path: "{{ path_backup }}{{ path_httpd }}{{ item }}"
+       state: directory
+       mode: '0755'
+       owner: hushpuppi
+       group: hushpuppi
+       recurse: yes
+      with_items: 
+      - "{{ path_cfg }}"
+      - "{{ path_data }}"
+
+   
+    - name: create backup directories httpd data
+      file: 
+       path: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ item }}"
+       state: directory
+       mode: '0755'
+       owner: hushpuppi
+       group: hushpuppi
+       recurse: yes
+      with_items: 
+      - "{{ path_prod }}"
+      - "{{ path_dev }}"
+
+    
+    - name: create backup directories sql
+      file: 
+       path: "{{ path_backup }}{{ path_sql }}{{ item }}"
+       state: directory
+       mode: '0755'
+       owner: hushpuppi
+       group: hushpuppi
+       recurse: yes
+      with_items: 
+      - "{{ path_cfg }}"
+      - "{{ path_data }}"
+
+ 
