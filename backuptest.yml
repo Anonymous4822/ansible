@@ -6,7 +6,6 @@
 
   vars: 
    path_backup: "/home/hushpuppi/backup-files"
-   path_httpd: "/httpd"
    path_sql: "/sql"
    path_server: "/server"
    path_cfg: "/cfg"
@@ -17,6 +16,8 @@
    path_ssh: "/ssh"
    path_firewalld: "/firewalld"
    path_fail2ban: "/fail2ban"
+   path_httpd: "/httpd"
+   path_postgresql: "/postgresql"
    path_rkhunter: "/rkhunter"
    path_openssl: "/openssl"
    date: "{{ ansible_date_time.date.replace('-','') }}"
@@ -25,7 +26,7 @@
 
     - name: create backup directories
       file: 
-       path: "{{ path_backup }}/{{ item }}"
+       path: "{{ path_backup }}{{ item }}"
        state: directory
        mode: '0755'
        owner: hushpuppi
@@ -75,4 +76,87 @@
       - "{{ path_cfg }}"
       - "{{ path_data }}"
 
- 
+
+    - name: checking services enabled
+      systemd:
+       name: "{{ item }}"
+       state: started
+      with_items:
+      - fail2ban.service
+      - firewalld.service
+      - sshd.service
+      - httpd.service
+      - postgresql-15.service
+
+
+    - name: create backup directories services
+      file: 
+       path: "{{ path_backup }}{{ path_server }}{{ item }}"
+       state: directory
+       mode: '0755'
+       owner: hushpuppi
+       group: hushpuppi
+       recurse: yes
+      with_items: 
+      - "{{ path_fail2ban }}"
+      - "{{ path_firewalld }}"
+      - "{{ path_ssh }}"
+      - "{{ path_httpd }}"
+      - "{{ path_postgresql }}"
+      - "{{ path_selinux }}"
+      - "{{ path_rkhunter }}"
+
+
+
+    - name: create backup web directory
+      archive:
+        force_archive: true
+        path: /var/www/html/domain1
+        dest: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ path_prod }}/web-{{ date }}.tar.bz2"
+        format: bz2
+        owner: hushpuppi
+        group: hushpuppi
+        mode: '0644'
+
+
+    - name: create backup services
+      archive:
+        force_archive: true
+        path: "/etc/{{ item }}"
+        dest: "{{ path_backup }}{{ path_server }}{{ item }}/{{ item }}-{{ date }}.tar.bz2"
+        format: bz2
+        owner: hushpuppi
+        group: hushpuppi
+        mode: '0644'
+      with_items: 
+      - "{{ path_fail2ban }}"
+      - "{{ path_firewalld }}"
+      - "{{ path_httpd }}"
+      - "{{ path_ssh }}"
+     
+
+    - name: create backup selinux
+      archive:
+        force_archive: true
+        path: /etc/selinux
+        dest: "{{ path_backup }}{{ path_server }}{{ path_selinux }}/selinux-{{ date }}.tar.bz2"
+        format: bz2
+        owner: hushpuppi
+        group: hushpuppi
+        mode: '0644'
+
+    - name: create backup rkhunter
+      archive:
+        force_archive: true
+        path: /etc/rkhunter.conf
+        dest: "{{ path_backup }}{{ path_server }}{{ path_rkhunter }}/rkhunter-{{ date }}.tar.bz2"
+        format: bz2
+        owner: hushpuppi
+        group: hushpuppi
+        mode: '0644'
+  
+
+
+
+
+
