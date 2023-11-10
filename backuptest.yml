@@ -148,15 +148,50 @@
     - name: create backup rkhunter
       archive:
         force_archive: true
-        path: /etc/rkhunter.conf
+        path: 
+        - /etc/rkhunter.conf
+        - /var/lib/rkhunter
         dest: "{{ path_backup }}{{ path_server }}{{ path_rkhunter }}/rkhunter-{{ date }}.tar.bz2"
         format: bz2
         owner: hushpuppi
         group: hushpuppi
         mode: '0644'
-  
 
 
+    - name: Create a backup directory
+      file:
+        path: "/var/lib/pgsql/15//backups/{{ date }}/"
+        mode: 0777
+        owner: hushpuppi
+        state: directory
 
 
+    - name: Install python-psycopg2 
+      yum: 
+        name: python-psycopg2 
+        state: latest
+
+
+    - name: Check if the database exists
+      become_user: postgres
+      postgresql_info:
+        db: "{{ item }}"
+      with_items:
+      - wedecide
+      - anonymous
+      - mrobot
+
+
+    - name: Back up the database
+      postgresql_db:
+        state: dump
+        name: "{{ item }}"
+        target: "/var/lib/pgsql/15/backups/{{ date }}/{{ item }}.dump.tar.bz2"
+        port: 5432
+      become: yes
+      become_user: postgres
+      with_items:
+      - wedecide
+      - anonymous
+      - mrobot
 
