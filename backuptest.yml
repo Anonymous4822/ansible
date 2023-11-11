@@ -5,7 +5,7 @@
   become: yes
 
   vars: 
-   path_backup: "/home/hushpuppi/backup-files"
+   path_backup: "/home/{{ ansible_user_id }}/backup-files"
    path_sql: "/sql"
    path_server: "/server"
    path_cfg: "/cfg"
@@ -29,8 +29,8 @@
        path: "{{ path_backup }}{{ item }}"
        state: directory
        mode: '0755'
-       owner: hushpuppi
-       group: hushpuppi
+       owner: "{{ ansible_user_id }}"
+       group: "{{ ansible_user_id }}"
        recurse: yes
       with_items: 
       - "{{ path_httpd }}"
@@ -43,8 +43,8 @@
        path: "{{ path_backup }}{{ path_httpd }}{{ item }}"
        state: directory
        mode: '0755'
-       owner: hushpuppi
-       group: hushpuppi
+       owner: "{{ ansible_user_id }}"
+       group: "{{ ansible_user_id }}"
        recurse: yes
       with_items: 
       - "{{ path_cfg }}"
@@ -56,8 +56,8 @@
        path: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ item }}"
        state: directory
        mode: '0755'
-       owner: hushpuppi
-       group: hushpuppi
+       owner: "{{ ansible_user_id }}"
+       group: "{{ ansible_user_id }}"
        recurse: yes
       with_items: 
       - "{{ path_prod }}"
@@ -69,8 +69,8 @@
        path: "{{ path_backup }}{{ path_sql }}{{ item }}"
        state: directory
        mode: '0755'
-       owner: hushpuppi
-       group: hushpuppi
+       owner: "{{ ansible_user_id }}"
+       group: "{{ ansible_user_id }}"
        recurse: yes
       with_items: 
       - "{{ path_cfg }}"
@@ -94,8 +94,8 @@
        path: "{{ path_backup }}{{ path_server }}{{ item }}"
        state: directory
        mode: '0755'
-       owner: hushpuppi
-       group: hushpuppi
+       owner: "{{ ansible_user_id }}"
+       group: "{{ ansible_user_id }}"
        recurse: yes
       with_items: 
       - "{{ path_fail2ban }}"
@@ -114,8 +114,8 @@
         path: /var/www/html/domain1
         dest: "{{ path_backup }}{{ path_httpd }}{{ path_data }}{{ path_prod }}/web-{{ date }}.tar.bz2"
         format: bz2
-        owner: hushpuppi
-        group: hushpuppi
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
         mode: '0644'
 
 
@@ -125,8 +125,8 @@
         path: "/etc/{{ item }}"
         dest: "{{ path_backup }}{{ path_server }}{{ item }}/{{ item }}-{{ date }}.tar.bz2"
         format: bz2
-        owner: hushpuppi
-        group: hushpuppi
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
         mode: '0644'
       with_items: 
       - "{{ path_fail2ban }}"
@@ -141,8 +141,8 @@
         path: /etc/selinux
         dest: "{{ path_backup }}{{ path_server }}{{ path_selinux }}/selinux-{{ date }}.tar.bz2"
         format: bz2
-        owner: hushpuppi
-        group: hushpuppi
+        owner: "{{ ansible_user_id }}" 
+        group: "{{ ansible_user_id }}"
         mode: '0644'
 
     - name: create backup rkhunter
@@ -153,8 +153,8 @@
         - /var/lib/rkhunter
         dest: "{{ path_backup }}{{ path_server }}{{ path_rkhunter }}/rkhunter-{{ date }}.tar.bz2"
         format: bz2
-        owner: hushpuppi
-        group: hushpuppi
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
         mode: '0644'
 
 
@@ -162,7 +162,7 @@
       file:
         path: "/var/lib/pgsql/15//backups/{{ date }}/"
         mode: 0777
-        owner: hushpuppi
+        owner: "{{ ansible_user_id }}"
         state: directory
 
 
