@@ -133,17 +133,8 @@
       - "{{ path_firewalld }}"
       - "{{ path_httpd }}"
       - "{{ path_ssh }}"
-     
+      - "{{ path_selinux }}"
 
-    - name: create backup selinux
-      archive:
-        force_archive: true
-        path: /etc/selinux
-        dest: "{{ path_backup }}{{ path_server }}{{ path_selinux }}/selinux-{{ date }}.tar.bz2"
-        format: bz2
-        owner: "{{ ansible_user_id }}" 
-        group: "{{ ansible_user_id }}"
-        mode: '0644'
 
     - name: create backup rkhunter
       archive:
@@ -156,14 +147,6 @@
         owner: "{{ ansible_user_id }}"
         group: "{{ ansible_user_id }}"
         mode: '0644'
-
-
-    - name: Create a backup directory
-      file:
-        path: "/var/lib/pgsql/15//backups/{{ date }}/"
-        mode: 0777
-        owner: "{{ ansible_user_id }}"
-        state: directory
 
 
     - name: Install python-psycopg2 
@@ -186,7 +169,8 @@
       postgresql_db:
         state: dump
         name: "{{ item }}"
-        target: "/var/lib/pgsql/15/backups/{{ date }}/{{ item }}.dump.tar.bz2"
+        #target: "/var/lib/pgsql/15/backups/{{ date }}/{{ item }}.dump.tar.bz2"
+        target: "/tmp/{{ item }}-{{ date }}.tar"
         port: 5432
       become: yes
       become_user: postgres
